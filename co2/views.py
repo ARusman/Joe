@@ -1,8 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-# howdy/urls.py
- # howdy/views.py
+ # co2/views.py
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
