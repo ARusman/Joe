@@ -1,1 +1,1 @@
-c:\program files (x86)\python34
+c:\program files (x86)\python35-32

@@ -27,7 +27,8 @@ __all__ = ["register", "lookup", "open", "EncodedFile", "BOM", "BOM_BE",
            "getincrementaldecoder", "getreader", "getwriter",
            "encode", "decode", "iterencode", "iterdecode",
            "strict_errors", "ignore_errors", "replace_errors",
-           "xmlcharrefreplace_errors", "backslashreplace_errors",
+           "xmlcharrefreplace_errors",
+           "backslashreplace_errors", "namereplace_errors",
            "register_error", "lookup_error"]
 
 ### Constants
@@ -105,8 +106,8 @@ class CodecInfo(tuple):
         return self
 
     def __repr__(self):
-        return "<%s.%s object for encoding %s at 0x%x>" % \
-                (self.__class__.__module__, self.__class__.__name__,
+        return "<%s.%s object for encoding %s at %#x>" % \
+                (self.__class__.__module__, self.__class__.__qualname__,
                  self.name, id(self))
 
 class Codec:
@@ -126,7 +127,8 @@ class Codec:
          'surrogateescape' - replace with private code points U+DCnn.
          'xmlcharrefreplace' - Replace with the appropriate XML
                                character reference (only for encoding).
-         'backslashreplace'  - Replace with backslashed escape sequences
+         'backslashreplace'  - Replace with backslashed escape sequences.
+         'namereplace'       - Replace with \\N{...} escape sequences
                                (only for encoding).
 
         The set of allowed values can be extended via register_error.
@@ -358,7 +360,8 @@ class StreamWriter(Codec):
              'xmlcharrefreplace' - Replace with the appropriate XML
                                    character reference.
              'backslashreplace'  - Replace with backslashed escape
-                                   sequences (only for encoding).
+                                   sequences.
+             'namereplace'       - Replace with \\N{...} escape sequences.
 
             The set of allowed parameter values can be extended via
             register_error.
@@ -428,7 +431,8 @@ class StreamReader(Codec):
 
              'strict' - raise a ValueError (or a subclass)
              'ignore' - ignore the character and continue with the next
-             'replace'- replace with a suitable replacement character;
+             'replace'- replace with a suitable replacement character
+             'backslashreplace' - Replace with backslashed escape sequences;
 
             The set of allowed parameter values can be extended via
             register_error.
@@ -1080,6 +1084,7 @@ try:
     replace_errors = lookup_error("replace")
     xmlcharrefreplace_errors = lookup_error("xmlcharrefreplace")
     backslashreplace_errors = lookup_error("backslashreplace")
+    namereplace_errors = lookup_error("namereplace")
 except LookupError:
     # In --disable-unicode builds, these error handler are missing
     strict_errors = None
@@ -1087,6 +1092,7 @@ except LookupError:
     replace_errors = None
     xmlcharrefreplace_errors = None
     backslashreplace_errors = None
+    namereplace_errors = None
 
 # Tell modulefinder that using codecs probably needs the encodings
 # package

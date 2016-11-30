@@ -231,7 +231,7 @@ class Random(_random.Random):
             while r >= n:
                 r = getrandbits(k)
             return r
-        # There's an overriden random() method but no new getrandbits() method,
+        # There's an overridden random() method but no new getrandbits() method,
         # so we can only use random() from here.
         if n >= maxsize:
             _warn("Underlying random() generator does not supply \n"
@@ -687,7 +687,7 @@ def _test_generator(n, func, args):
     print(round(t1-t0, 3), 'sec,', end=' ')
     avg = total/n
     stddev = _sqrt(sqsum/n - avg*avg)
-    print('avg %g, stddev %g, min %g, max %g' % \
+    print('avg %g, stddev %g, min %g, max %g\n' % \
               (avg, stddev, smallest, largest))
 
 

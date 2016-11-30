@@ -94,7 +94,7 @@ def copy(x):
     else:
         reductor = getattr(x, "__reduce_ex__", None)
         if reductor:
-            rv = reductor(2)
+            rv = reductor(4)
         else:
             reductor = getattr(x, "__reduce__", None)
             if reductor:
@@ -171,7 +171,7 @@ def deepcopy(x, memo=None, _nil=[]):
                 else:
                     reductor = getattr(x, "__reduce_ex__", None)
                     if reductor:
-                        rv = reductor(2)
+                        rv = reductor(4)
                     else:
                         reductor = getattr(x, "__reduce__", None)
                         if reductor:
@@ -207,7 +207,6 @@ try:
 except AttributeError:
     pass
 d[type] = _deepcopy_atomic
-d[range] = _deepcopy_atomic
 d[types.BuiltinFunctionType] = _deepcopy_atomic
 d[types.FunctionType] = _deepcopy_atomic
 d[weakref.ref] = _deepcopy_atomic
@@ -221,17 +220,15 @@ def _deepcopy_list(x, memo):
 d[list] = _deepcopy_list
 
 def _deepcopy_tuple(x, memo):
-    y = []
-    for a in x:
-        y.append(deepcopy(a, memo))
+    y = [deepcopy(a, memo) for a in x]
     # We're not going to put the tuple in the memo, but it's still important we
     # check for it, in case the tuple contains recursive mutable structures.
     try:
         return memo[id(x)]
     except KeyError:
         pass
-    for i in range(len(x)):
-        if x[i] is not y[i]:
+    for k, j in zip(x, y):
+        if k is not j:
             y = tuple(y)
             break
     else:
